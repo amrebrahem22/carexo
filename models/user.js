@@ -1,8 +1,8 @@
-const mongoonse = require("mongoonse");
+const mongoose = require("mongoose");
 const crypto = require("crypto");
-const uuidv1 = require("uuid/v1");
+const uuid = require("uuid");
 
-const userSchema = new mongoonse.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -22,7 +22,6 @@ const userSchema = new mongoonse.Schema(
     },
     about: {
       type: String,
-      required: true,
     },
     salt: String,
     role: {
@@ -39,17 +38,17 @@ const userSchema = new mongoonse.Schema(
 
 userSchema
   .virtual("password")
-  .set(function(password) {
+  .set(function (password) {
     this._password = password;
-    this.salt = uuidv1();
+    this.salt = uuid.v1();
     this.hashed_password = this.encryptPassword(password);
   })
-  .get(function() {
-      return this._password;
+  .get(function () {
+    return this._password;
   });
 
 userSchema.methods = {
-  encryptPassword: function(password) {
+  encryptPassword: function (password) {
     if (!password) return "";
 
     try {
