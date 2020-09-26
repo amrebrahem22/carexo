@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const userRouter = require('./routes/user');
 
 const app = express();
 
@@ -9,9 +10,7 @@ mongoose.connect(process.env.DATABASE, {
   useCreateIndex: true,
 }).then(() => console.log("Database Connected."));
 
-app.get("/", (req, res) => {
-  res.send("hello World");
-});
+app.use('/api', userRouter);
 
 const port = process.env.PORT || 8000;
 
